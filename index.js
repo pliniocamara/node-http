@@ -27,8 +27,23 @@ app.get('/html', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    res.json(books.filter(book => book.favorito));
+    res.send(books);
 });
+
+app.get('/books/:id', (req, res) => {
+    const id = +(req.params.id);
+    const book = books.find(book => book._id === id);
+    if (book) {
+        res.send(book);
+    } else {
+        res.sendStatus(404);
+    };
+});
+
+app.post('/books', (req, res) => {
+    books.push(req.body);
+    res.json(books);
+})
 
 // const hostname = '192.168.2.26';
 // app.listen(3000, hostname);
