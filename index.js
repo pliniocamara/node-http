@@ -1,8 +1,3 @@
-//import express from 'express';
-function removeItem(arr, prop, value) {
-    return arr.filter(i => i[prop] !== value);
-}
-
 const express = require('express');
 const app = express();
 
@@ -45,7 +40,7 @@ app.get('/books/:id', (req, res) => {
 });
 
 app.post('/books', (req, res) => {
-    const body = (req.body);
+    const body = req.body;
     if (Array.isArray(body)) {
         body.map(obj => books.push(obj));
     } else {
@@ -56,9 +51,24 @@ app.post('/books', (req, res) => {
 
 app.delete('/books/:id', (req, res) => {
     const id = +(req.params.id);
-    const arr = removeItem(books, '_id', id);
-    books = arr;
+    const index = books.findIndex(obj => obj._id === id);
+    if (index === -1) {
+        res.sendStatus(404);
+    } else {
+        books.splice(index, 1);
+        res.status(200).send(books);
+    };
+});
+
+app.patch('/books/:id', (req, res) => {
+    const id = +(req.params.id);
+    const body = req.body;
+    const book = books.find(obj => obj._id === id);
+
+    book.title = body.title;
+    
     res.send(books);
+
 });
 
 // const hostname = '192.168.2.26';
