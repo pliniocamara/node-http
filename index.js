@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 let books = [
-    {_id: 1, title: 'Harry Potter 1', autor: 'J.K. Rowling', favorito: true},
-    {_id: 2, title: 'Harry Potter 2', autor: 'J.K. Rowling', favorito: false},
-    {_id: 3, title: 'Harry Potter 3', autor: 'J.K. Rowling', favorito: true}
+    {_id: 1, title: 'O Senhor dos Anéis', autor: 'J. R. R. Tolkien', favorito: false},
+    {_id: 2, title: 'Os Miseráveis', autor: 'Victor Hugo', favorito: true},
+    {_id: 3, title: 'Os Irmãos Karamazov', autor: 'Fiódor Dostoiévski', favorito: true}
 ];
 
 app.use(
+    cors(),
     express.urlencoded({
         extended: true
     })
@@ -26,7 +28,16 @@ app.get('/html', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    res.send(books);
+    const booksView = books.map(book => {
+        if (book.favorito) {
+            book.favorito = "Sim";
+            return book;
+        } else {
+            book.favorito = "Não";
+            return book;
+        }
+    })
+    res.send(booksView);
 });
 
 app.get('/books/:id', (req, res) => {
@@ -41,6 +52,7 @@ app.get('/books/:id', (req, res) => {
 
 app.post('/books', (req, res) => {
     const body = req.body;
+
     if (Array.isArray(body)) {
         body.map(obj => books.push(obj));
     } else {
