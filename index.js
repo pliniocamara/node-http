@@ -28,16 +28,16 @@ app.get('/html', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    const booksView = books.map(book => {
-        if (book.favorito) {
-            book.favorito = "Sim";
-            return book;
-        } else {
-            book.favorito = "Não";
-            return book;
-        }
-    })
-    res.send(booksView);
+    // const booksView = books.map(book => {
+    //     if (book.favorito) {
+    //         book.favorito = "Sim";
+    //         return book;
+    //     } else {
+    //         book.favorito = "Não";
+    //         return book;
+    //     }
+    // })
+    res.send(books);
 });
 
 app.get('/books/:id', (req, res) => {
