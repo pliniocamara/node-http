@@ -1,6 +1,31 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
+const app = express();
+const db = require('./db/dbConfig');
+const mongoose = require('mongoose');
+
+db.once('open', () => {
+    console.log('Conexão realizada');
+});
+
+const livrosSchema = new mongoose.Schema({
+    id: {type: String},
+    title: {type: String, required: true},
+    autor: {type: String, required: true},
+    favorito: {type: Boolean, required: true},
+});
+
+const livros = mongoose.model('testes', livrosSchema);
+
+app.get('/teste', (req, res) => {
+    livros.find((error, livros) => {
+        res.status(200).json(livros);
+    });
+});
+
+
+
+
 
 let books = [
     {_id: 1, title: 'O Senhor dos Anéis', autor: 'J. R. R. Tolkien', favorito: false},
