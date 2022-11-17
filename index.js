@@ -9,23 +9,19 @@ db.once('open', () => {
 });
 
 const livrosSchema = new mongoose.Schema({
-    id: {type: String},
+    _id: {type: String},
     title: {type: String, required: true},
     autor: {type: String, required: true},
     favorito: {type: Boolean, required: true},
 });
 
-const livros = mongoose.model('testes', livrosSchema);
+const livros = mongoose.model('books', livrosSchema);
 
-app.get('/teste', (req, res) => {
+app.get('/books-db', (req, res) => {
     livros.find((error, livros) => {
         res.status(200).json(livros);
     });
 });
-
-
-
-
 
 let books = [
     {_id: 1, title: 'O Senhor dos Anéis', autor: 'J. R. R. Tolkien', favorito: false},
@@ -53,15 +49,6 @@ app.get('/html', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    // const booksView = books.map(book => {
-    //     if (book.favorito) {
-    //         book.favorito = "Sim";
-    //         return book;
-    //     } else {
-    //         book.favorito = "Não";
-    //         return book;
-    //     }
-    // })
     res.send(books);
 });
 
@@ -108,6 +95,4 @@ app.patch('/books/:id', (req, res) => {
 
 });
 
-// const hostname = '192.168.2.26';
-// app.listen(3000, hostname);
 app.listen(5000);
